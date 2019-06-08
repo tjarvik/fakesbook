@@ -16,4 +16,13 @@ class User < ApplicationRecord
 
   has_many :posts
 
+  def friends_list
+    User.joins(:friendships).where("friend_id = ?", self.id)
+    # User.where("name = ?", "Mama")#placeholder
+  end
+
+  def everybody_else
+    User.where.not("id = ?", self.id)
+  end
+
 end

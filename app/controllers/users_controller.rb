@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!, except: [:new, :create]
   before_action :set_user, only: [:index, :show, :edit, :update, :destroy]
-  before_action :get_friends, only: [:index, :show]
+  before_action :set_friends, only: [:index, :show]
 
   # GET /users
   # GET /users.json
@@ -9,7 +9,7 @@ class UsersController < ApplicationController
     if params[:friend_toggle_id]
       toggle_friend(@user, params[:friend_toggle_id])
     end
-    @users = everybody_else(@user)
+    @users = @user.everybody_else
     @friend_statuses = get_friend_statuses(@user)
   end
 
@@ -31,10 +31,9 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to user_path(@user), notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }
@@ -67,6 +66,8 @@ class UsersController < ApplicationController
     end
   end
 
+  
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -78,13 +79,8 @@ class UsersController < ApplicationController
       params.fetch(:user, {})
     end
 
-    def everybody_else(user)
-      User.where.not("id = ?", user.id)
-    end
-
-    def get_friends
-      #@friends = User.joins(:friendships).where(friendships: user)
-      @friends = User.where("email = ?", "eep@eep.com")#placeholder
+    def set_friends
+      @friends = @user.friends_list
     end
 
     def get_friend_statuses(user)
@@ -96,7 +92,7 @@ class UsersController < ApplicationController
     end
 
     def toggle_friend(user, friend_id)
-
+      
       flash.now[:notice] = "Friend request sent"
     end
 end
