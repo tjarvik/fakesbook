@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Users</h1>
+<h1>Everyone on Fakesbook:</h1>
 
 <table>
   <thead>
@@ -12,9 +12,9 @@
   <tbody>
     <% @users.each do |user| %>
       <tr>
-        <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to "#{user.name}", user %></td>
+        <td><%= @friend_statuses[user.id] %></td>
+        <td><%= link_to "add friend", users_path(id: @user.id, friend_toggle_id: user.id) %></td>
       </tr>
     <% end %>
   </tbody>

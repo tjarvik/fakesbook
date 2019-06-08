@@ -1,4 +1,11 @@
 <p id="notice"><%= notice %></p>
+<p> picture here </p>
+<h1><%= @user.name %></h1>
+<h3>I'm awesome because:</h3>
+<p><%= @user.details %></p>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<% if @user == current_user %>
+    <%= link_to 'Edit profile', edit_user_path(@user) %> | 
+    <%= link_to 'Edit login info', edit_user_registration_path %> |
+<% end %>
+<%= link_to 'Back', users_path(id: current_user.id) %>
