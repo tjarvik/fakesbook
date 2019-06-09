@@ -43,7 +43,7 @@ class PostsController < ApplicationController
   def update
     respond_to do |format|
       if @post.update(post_params)
-        format.html { redirect_to @post, notice: "Okay. If you really think that's any better." }
+        format.html { redirect_to posts_path, notice: "Okay. If you really think that's any better." }
         format.json { render :show, status: :ok, location: @post }
       else
         format.html { render :edit }

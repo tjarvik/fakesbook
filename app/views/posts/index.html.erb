@@ -4,7 +4,10 @@
 
 
 <% @posts.each do |post| %>
-  <div><%= post.user.name %> says: <%= post.body %>
+  <div>
+    <%= post.user.name %> says: <%= post.body %>
+    <br>
+    <%= image_tag post.image.url if post.image?  %>
     <br>
     <% if post.user == current_user %>
       <%= link_to 'Edit', edit_post_path(post) %> | 
