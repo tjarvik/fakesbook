@@ -5,7 +5,8 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all
+    people_in_feed = current_user.feed_list
+    @posts = Post.where(user: people_in_feed)
   end
 
   # GET /posts/1
