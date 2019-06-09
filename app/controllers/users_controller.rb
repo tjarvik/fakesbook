@@ -7,12 +7,19 @@ class UsersController < ApplicationController
   # GET /users.json
   def index
     if params[:friend_toggle_id]
-      add = params[:method] == "add friend" ? true : false
-      toggle_friend(current_user, params[:friend_toggle_id], add)
+      if params[:method] == "add friend"
+        current_user.add_friend(params[:friend_toggle_id])
+        flash.now[:notice] = "Friend request sent."
+      elsif params[:method] == "cancel"
+        current_user.cancel_request(params[:friend_toggle_id])
+        flash.now[:notice] = "Friend request canceled."
+      else
+        current_user.remove_friend(params[:friend_toggle_id])
+      end
     end
     @users = current_user.everybody_else
     @friends = current_user.friends_list
-    @friend_statuses = set_friend_statuses(current_user)
+    @friend_statuses = current_user.friend_statuses
     @button_texts = set_button_texts(@friend_statuses)
   end
 
@@ -78,7 +85,7 @@ class UsersController < ApplicationController
         flash.now[:notice] = "You have been added to #{request.requester.name}'s harem."
       end
     end
-      @requests = current_user.requests_list
+    @requests = current_user.requests_list
   end
 
   private
@@ -95,31 +102,14 @@ class UsersController < ApplicationController
       @friends = @user.friends_list
     end
 
-    def set_friend_statuses(user)
-      friend_statuses = Hash.new('not friends')
-      @friends.find_each do |friend|
-        friend_statuses[friend.id] = 'friends'
-      end
-      friend_statuses
-    end
-
     def set_button_texts(friend_statuses)
       button_texts = Hash.new('add friend')
       friend_statuses.each do |id, status|
           button_texts[id] = 'remove friend' if status == 'friends'
+          button_texts[id] = 'cancel' if status == 'request pending'
       end
       button_texts
     end
 
-    def toggle_friend(user, friend_id, add)
-      if add
-        user.add_friend(friend_id)
-        flash.now[:notice] = "Friend request sent."
-      else
-        user.remove_friend(friend_id)
-      end
-    end
-
-    
-      
+          
 end

@@ -20,8 +20,23 @@ class User < ApplicationRecord
     User.joins(:friendships).where("friend_id = ?", self.id)
   end
 
+  def friend_statuses
+    statuses = Hash.new('not friends')
+    self.friends_list.each do |friend|
+      statuses[friend.id] = 'friends'
+    end
+    self.sent_requests_list.each do |request|
+      statuses[request.requested_id] = 'request pending'
+    end
+    statuses
+  end
+
   def requests_list
     FriendRequest.where("requested_id = ?", self.id)
+  end
+
+  def sent_requests_list
+    FriendRequest.where("requester_id = ?", self.id)
   end
 
   def everybody_else
@@ -39,6 +54,11 @@ class User < ApplicationRecord
   def confirm_request(friend_id)
     Friendship.create!(user_id: self.id, friend_id: friend_id)
     Friendship.create!(user_id: friend_id, friend_id: self.id)
+  end
+
+  def cancel_request(friend_id)
+    request = FriendRequest.where("requester_id = ? AND requested_id =?", self.id, friend_id).first
+    FriendRequest.destroy(request.id)
   end
 
   def remove_friend(friend_id)
