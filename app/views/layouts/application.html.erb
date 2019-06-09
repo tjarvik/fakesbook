@@ -14,7 +14,7 @@
       <% if user_signed_in? %>
         <%= link_to "Show off now", new_post_path %> | 
         <%= link_to 'Snooze feed', posts_path %> | 
-        <%= link_to 'Amass empire of friends', users_path(id: current_user.id) %> |
+        <%= link_to 'Amass empire of friends', users_path %> |
         <%= link_to 'Think about myself', user_path(id: current_user.id) %> |
         Signed in as <strong><%= current_user.name %></strong>.
         <%= link_to 'Sign out', destroy_user_session_path, method: :delete %>

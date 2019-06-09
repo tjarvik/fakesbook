@@ -28,5 +28,11 @@ class UserTest < ActiveSupport::TestCase
     #don't include self
     assert_not @friends.include?(@user)
   end
-  
+
+  test "unfriending should destroy friendship" do
+    assert @user.friends?(@already_friend)
+    @user.remove_friend(@already_friend.id)
+    assert_not @user.friends?(@already_friend)
+  end
+
 end

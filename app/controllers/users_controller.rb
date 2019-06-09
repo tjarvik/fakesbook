@@ -1,16 +1,19 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!, except: [:new, :create]
-  before_action :set_user, only: [:index, :show, :edit, :update, :destroy]
-  before_action :set_friends, only: [:index, :show]
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_friends, only: [:show, :edit]
 
   # GET /users
   # GET /users.json
   def index
     if params[:friend_toggle_id]
-      toggle_friend(@user, params[:friend_toggle_id])
+      add = params[:method] == "add friend" ? true : false
+      toggle_friend(current_user, params[:friend_toggle_id], add)
     end
-    @users = @user.everybody_else
-    @friend_statuses = get_friend_statuses(@user)
+    @users = current_user.everybody_else
+    @friends = current_user.friends_list
+    @friend_statuses = set_friend_statuses(current_user)
+    @button_texts = set_button_texts(@friend_statuses)
   end
 
   # GET /users/1
@@ -83,16 +86,30 @@ class UsersController < ApplicationController
       @friends = @user.friends_list
     end
 
-    def get_friend_statuses(user)
-      friend_statuses = Hash.new('not_friends')
+    def set_friend_statuses(user)
+      friend_statuses = Hash.new('not friends')
       @friends.find_each do |friend|
         friend_statuses[friend.id] = 'friends'
       end
       friend_statuses
     end
 
-    def toggle_friend(user, friend_id)
-      
-      flash.now[:notice] = "Friend request sent"
+    def set_button_texts(friend_statuses)
+      button_texts = Hash.new('add friend')
+      friend_statuses.each do |id, status|
+          button_texts[id] = 'remove friend' if status == 'friends'
+      end
+      button_texts
     end
+
+    def toggle_friend(user, friend_id, add)
+      if add
+        user.add_friend(friend_id)
+      else
+        user.remove_friend(friend_id)
+      end
+    end
+
+    
+      
 end
