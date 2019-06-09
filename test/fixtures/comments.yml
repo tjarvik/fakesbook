@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+one:
+  body: MyText
 
-one: 
-  body: 'old text'
 two:
-  body: 'more old text'
+  body: MyText

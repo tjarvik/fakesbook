@@ -13,6 +13,14 @@
       <%= link_to 'Edit', edit_post_path(post) %> | 
       <%= link_to 'Delete', post, method: :delete, data: { confirm: 'Are you sure?' } %>
     <% end %>
+    <% post.comments.each do |comment| %>
+      <p><%= comment.user.name %> says <%= comment.body %></p>
+    <% end %>
+    <%= form_for(:comments, url: comments_path, method: :post) do |f| %>
+      <%= f.text_area :body, placeholder: "Tell them what you REALLY think..."%>
+      <%= f.hidden_field :post_id, value: post.id %>
+      <%= f.submit "add snark" %>
+    <% end %>
   </div>
 <% end %>
 

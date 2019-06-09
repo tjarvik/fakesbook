@@ -1,6 +1,9 @@
 class Post < ApplicationRecord
     belongs_to :user
-    default_scope -> { order(created_at: :desc) }
+    has_many :comments, dependent: :destroy
+    has_many :likes, as: :likeable, dependent: :destroy
+
+    default_scope -> { order(updated_at: :desc) }
     mount_uploader :image, ImageUploader
     validate  :image_size
 

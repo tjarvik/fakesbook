@@ -15,6 +15,8 @@ class User < ApplicationRecord
     foreign_key: "requested_id", class_name: "User"
 
   has_many :posts, dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :likes, dependent: :destroy
 
   def friends_list
     User.joins(:friendships).where("friend_id = ?", self.id)
