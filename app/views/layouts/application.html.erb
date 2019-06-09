@@ -16,6 +16,7 @@
         <%= link_to 'Snooze feed', posts_path %> | 
         <%= link_to 'Amass empire of friends', users_path %> |
         <%= link_to 'Think about myself', user_path(id: current_user.id) %> |
+        <%= link_to 'Notifications', '/notifications'  %> |
         Signed in as <strong><%= current_user.name %></strong>.
         <%= link_to 'Sign out', destroy_user_session_path, method: :delete %>
       <% else %>

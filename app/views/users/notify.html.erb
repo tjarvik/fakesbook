@@ -1,0 +1,11 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Notifications</h1>
+<h3>Friend requests:</h3>
+
+<% @requests.each do |request| %>
+    <div>
+    <span><%= request.requester.name %> thinks you're cool enough to join their clique. </span><span><%= 
+    link_to "join their clique", controller: "users", action: "notify", request_id: request.id %></span>
+    </div>
+<% end %>

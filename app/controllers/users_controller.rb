@@ -69,10 +69,19 @@ class UsersController < ApplicationController
     end
   end
 
-  
+  def notify
+    if params[:request_id]
+      request = FriendRequest.find(params[:request_id])
+      if request.requested_id == current_user.id #should be true unless spoofed
+        current_user.confirm_request(request.requester_id)
+        request.destroy
+        flash.now[:notice] = "You have been added to #{request.requester.name}'s harem."
+      end
+    end
+      @requests = current_user.requests_list
+  end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
     end
@@ -105,6 +114,7 @@ class UsersController < ApplicationController
     def toggle_friend(user, friend_id, add)
       if add
         user.add_friend(friend_id)
+        flash.now[:notice] = "Friend request sent."
       else
         user.remove_friend(friend_id)
       end

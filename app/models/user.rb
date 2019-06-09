@@ -20,6 +20,10 @@ class User < ApplicationRecord
     User.joins(:friendships).where("friend_id = ?", self.id)
   end
 
+  def requests_list
+    FriendRequest.where("requested_id = ?", self.id)
+  end
+
   def everybody_else
     User.where.not("id = ?", self.id)
   end
@@ -29,6 +33,10 @@ class User < ApplicationRecord
   end
 
   def add_friend(friend_id)
+    FriendRequest.create!(requester_id: self.id, requested_id: friend_id)
+  end
+
+  def confirm_request(friend_id)
     Friendship.create!(user_id: self.id, friend_id: friend_id)
     Friendship.create!(user_id: friend_id, friend_id: self.id)
   end
