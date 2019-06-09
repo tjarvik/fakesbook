@@ -26,10 +26,10 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     @post = Post.new(post_params)
-
+    @post.user = current_user
     respond_to do |format|
       if @post.save
-        format.html { redirect_to @post, notice: "Okay, we'll see what people think of THAT." }
+        format.html { redirect_to posts_path, notice: "Okay, we'll see what people think of THAT." }
         format.json { render :show, status: :created, location: @post }
       else
         format.html { render :new }
@@ -70,6 +70,6 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.fetch(:post, {})
+      params.fetch(:post).permit(:body, :image)
     end
 end

@@ -10,8 +10,21 @@
       </ul>
     </div>
   <% end %>
-
+  <%= form.text_area :body, placeholder: "Tell people how great your life is today..."%>
+  <br>
+  Include a photo of your lunch:
+  <br>
+  <%= form.file_field :image, accept: 'image/jpeg,image/gif,image/png' %>
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit "show off" %>
   </div>
 <% end %>
+
+<script type="text/javascript">
+  $('#post_picture').bind('change', function() {
+    var size_in_megabytes = this.files[0].size/1024/1024;
+    if (size_in_megabytes > 5) {
+      alert('Maximum file size is 5MB. Please choose a smaller file.');
+    }
+  });
+</script>
