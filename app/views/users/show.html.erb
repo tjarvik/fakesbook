@@ -6,7 +6,7 @@
 
 <h3>Friends:</h3>
 <% @friends.each do |friend| %>
-    <p><%= friend.name %></p>
+    <p><%= image_tag friend.image.url(:thumb) if friend.image? %><%= friend.name %></p>
 <% end %>
 <% if @user.friends?(current_user) || @user == current_user %>
     <h3>Posts:</h3>
@@ -15,6 +15,6 @@
 <p>
     <% if @user == current_user %>
         <%= link_to 'Edit profile', edit_user_path(@user) %> | 
-        <%= link_to 'Edit login info', edit_user_registration_path %> |
+        <%= link_to 'Edit login info', edit_user_registration_path %>
     <% end %>
 </p>

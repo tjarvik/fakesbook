@@ -5,13 +5,14 @@
 <table>
   <thead>
     <tr>
-      <th colspan="3"></th>
+      <th colspan="4"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @users.each do |user| %>
       <tr>
+        <td><%= image_tag user.image.url(:thumb) if user.image? %></td>
         <td><%= link_to "#{user.name}", user %></td><td><%= @friend_statuses[user.id] 
         %></td><td><%= link_to "#{@button_texts[user.id]}", users_path(friend_toggle_id: user.id, method: @button_texts[user.id]) %></td>
       </tr>

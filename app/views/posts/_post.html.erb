@@ -1,5 +1,8 @@
 <div>
-    <%= post.user.name %> says: <%= post.body %>
+    <%= image_tag post.user.image.url(:thumb) if post.user.image? %><strong><%= post.user.name %></strong> | 
+    <%= time_ago_in_words(post.created_at) %> ago
+    <br>
+    <%= post.body %>
     <br>
     <%= image_tag post.image.url if post.image?  %>
     <br>
@@ -14,7 +17,10 @@
     <% end %>
     <h5>Comments</h5>
     <% post.comments.each do |comment| %>
-      <p><%= comment.user.name %> says: <%= comment.body %></p>
+      <p><%= image_tag comment.user.image.url(:thumb) if comment.user.image? %>
+      <strong><%= comment.user.name %></strong> | <%= time_ago_in_words(comment.created_at) %> ago
+      <br>
+      <%= comment.body %>
     <% end %>
     <%= form_for(:comments, url: comments_path, method: :post) do |cf| %>
       <%= cf.text_area :body, placeholder: "Tell them what you REALLY think..."%>
