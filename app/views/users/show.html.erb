@@ -1,5 +1,5 @@
 <p id="notice"><%= notice %></p>
-<p> picture here </p>
+<%= image_tag @user.image.url if @user.image?  %>
 <h1><%= @user.name %></h1>
 <h3>Awesome because:</h3>
 <p><%= @user.details %></p>

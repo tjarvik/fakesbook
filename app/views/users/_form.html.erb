@@ -1,7 +1,7 @@
 <%= form_with(model: user, local: true) do |form| %>
   <% if user.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+      <h2><%= pluralize(user.errors.count, "error") %> prohibited this profile from being updated:</h2>
 
       <ul>
       <% user.errors.full_messages.each do |message| %>
@@ -10,8 +10,12 @@
       </ul>
     </div>
   <% end %>
-  xyz
+  <%= form.text_area :details, placeholder: "My perfect job and relationships..."%>
+  <br>
+  My professional modeling head shot:
+  <br>
+  <%= form.file_field :image, accept: 'image/jpeg,image/gif,image/png' %>
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit "improve self" %>
   </div>
 <% end %>

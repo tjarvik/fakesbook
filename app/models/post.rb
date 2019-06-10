@@ -10,13 +10,4 @@ class Post < ApplicationRecord
     def likes_count
         Like.where("likeable_id = ? AND likeable_type = ?", self.id, 'Post').count
     end
-
-    private
-
-    def image_size
-        if image.size > 5.megabytes
-            errors.add(:image, "should be less than 5MB")
-        end
-    end
-
 end
