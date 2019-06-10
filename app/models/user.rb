@@ -22,6 +22,10 @@ class User < ApplicationRecord
     User.joins(:friendships).where("friend_id = ?", self.id)
   end
 
+  def posts_list
+    Post.where("user_id = ?", self.id)
+  end
+
   def feed_list
     User.joins(:friendships).where("friend_id = ?", self.id) + User.where("id = ?", self.id)
   end
