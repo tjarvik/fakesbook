@@ -13,13 +13,19 @@
       <%= link_to 'Edit', edit_post_path(post) %> | 
       <%= link_to 'Delete', post, method: :delete, data: { confirm: 'Are you sure?' } %>
     <% end %>
-    <% post.comments.each do |comment| %>
-      <p><%= comment.user.name %> says <%= comment.body %></p>
+    <%= pluralize(post.likes_count, 'like') %>
+    <%= form_for(:likes, url: likes_path, method: :post) do |lf| %>
+      <%= lf.hidden_field :post_id, value: post.id %>
+      <%= lf.submit "like" %>
     <% end %>
-    <%= form_for(:comments, url: comments_path, method: :post) do |f| %>
-      <%= f.text_area :body, placeholder: "Tell them what you REALLY think..."%>
-      <%= f.hidden_field :post_id, value: post.id %>
-      <%= f.submit "add snark" %>
+    <h5>Comments</h5>
+    <% post.comments.each do |comment| %>
+      <p><%= comment.user.name %> says: <%= comment.body %></p>
+    <% end %>
+    <%= form_for(:comments, url: comments_path, method: :post) do |cf| %>
+      <%= cf.text_area :body, placeholder: "Tell them what you REALLY think..."%>
+      <%= cf.hidden_field :post_id, value: post.id %>
+      <%= cf.submit "add snark" %>
     <% end %>
   </div>
 <% end %>

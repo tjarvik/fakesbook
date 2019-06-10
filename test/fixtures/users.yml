@@ -2,25 +2,21 @@
 
 
 joe:
-  id: 1
   name: joe
   email: joe@fake.com
   details: 'really awesome'
 
 mama:
-  id: 2
   name: mama
   email: mama@fake.com
   details: 'also really awesome'
 
 papa:
-  id: 3
   name: papa
   email: papa@fake.com
   details: 'also really awesome'
 
 donald:
-  id: 4
   name: donald
   email: donald@fake.com
   details: 'not awesome at all'

@@ -7,6 +7,10 @@ class Post < ApplicationRecord
     mount_uploader :image, ImageUploader
     validate  :image_size
 
+    def likes_count
+        Like.where("likeable_id = ? AND likeable_type = ?", self.id, 'Post').count
+    end
+
     private
 
     def image_size

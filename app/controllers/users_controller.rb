@@ -41,28 +41,21 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to user_path(@user), notice: 'User was successfully created.' }
-        format.json { render :show, status: :created, location: @user }
-      else
-        format.html { render :new }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.save
+      redirect_to user_path(@user), notice: 'User was successfully created.'       
+    else
+      puts assigns(@user).errors.inspect
+      render :new
     end
   end
 
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
-      else
-        format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.update(user_params)
+      redirect_to @user, notice: 'User was successfully updated.'
+    else
+      render :edit
     end
   end
 
@@ -82,6 +75,7 @@ class UsersController < ApplicationController
       if request.requested_id == current_user.id #should be true unless spoofed
         current_user.confirm_request(request.requester_id)
         request.destroy
+        @notifications -= 1
         flash.now[:notice] = "You have been added to #{request.requester.name}'s harem."
       end
     end

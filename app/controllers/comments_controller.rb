@@ -5,7 +5,7 @@ class CommentsController < ApplicationController
         @comment.user = current_user
         @comment.post = Post.find(params[:comments][:post_id])
         if @comment.save!
-            redirect_to posts_path, notice: "Okay, we'll see what people think of THAT."
+            redirect_to posts_path, notice: "Okay, we'll see what they think of THAT."
         else
             redirect_to posts_path, notice: "Comment sucked and could not be posted."
         end
